@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data
@@ -19,10 +20,11 @@ public class Privilege implements IdentifiableComponent, NameableComponent {
     @Column(name = "PRIV_ID")
     private Long id;
 
+    @NotNull
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(unique = false, nullable = true)
+    @Column(unique = false, nullable = false)
     private String description;
 
     @EqualsAndHashCode.Exclude

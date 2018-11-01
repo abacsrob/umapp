@@ -2,6 +2,7 @@ package com.restcourse.umapp.web.controller;
 
 import com.restcourse.umapp.common.IdentifiableComponent;
 import com.restcourse.umapp.service.PagingAndSortingService;
+import com.restcourse.umapp.web.RestPreconditions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,14 +35,37 @@ public abstract class AbstractController<T extends IdentifiableComponent> {
     }
 
     protected final void createInternal(final T resource) {
+        String resourceType = resource.getClass().getSimpleName();
+        RestPreconditions.checkRequestValidity(
+                resource == null,
+                "Cannot create a " + resourceType + " resource because the resource is null!");
+        RestPreconditions.checkRequestValidity(
+                resource.getId() == null,
+                "Cannot create a " + resourceType + " resource with an id value of null!");
+        RestPreconditions.checkRequestValidity(
+                getService().findOne(resource.getId()) != null,
+                "The " + resourceType + " resource with id=" + resource.getId().toString() + " already exists on the server!");
         getService().create(resource);
     }
 
     protected final void updateInternal(final long id, final T resource) {
+        String resourceType = resource.getClass().getSimpleName();
+        RestPreconditions.checkRequestValidity(
+                resource == null,
+                "The resource is null!");
+        RestPreconditions.checkRequestValidity(
+                id != resource.getId(),
+                "The " + resourceType + " id and the request URI id don't match!");
+        RestPreconditions.checkRequestValidity(
+                getService().findOne(id) == null,
+                "The " + resourceType + " resource with id=" + id + " does not exist on the server!");
         getService().update(resource);
     }
 
     protected final void deleteByIdInternal(final long id) {
+        RestPreconditions.checkRequestValidity(
+                getService().findOne(id) == null,
+                "The requested resource with id=" + id + " does not exist on the server. Cannot delete!");
         getService().delete(id);
     }
 
