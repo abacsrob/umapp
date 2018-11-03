@@ -1,7 +1,10 @@
 package com.restcourse.umapp.service;
 
 import com.google.common.collect.Lists;
-import com.restcourse.umapp.common.IdentifiableComponent;
+import com.restcourse.umapp.common.UmDto;
+import com.restcourse.umapp.common.UmEntity;
+import com.restcourse.umapp.common.UmIdentifiable;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,64 +15,75 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
-public abstract class AbstractService<T extends IdentifiableComponent> implements PagingAndSortingService<T> {
+public abstract class AbstractService<E extends UmEntity, D extends UmDto> implements PagingAndSortingService<D> {
+
+    protected abstract Converter<E, D> getToDtoConverter();
+    protected abstract Converter<D, E> getToEntityConverter();
 
     @Override
     @Transactional(readOnly = true)
-    public T findOne(Long id) {
-        Optional<T> entity = getDao().findById(id);
-        return entity.orElse(null);
+    public D findOne(Long id) {
+        Optional<E> entity = getDao().findById(id);
+        if (entity.isPresent()) {
+            return getToDtoConverter().convert(entity.get());
+        }
+        return null;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<T> findAll() {
-        return Lists.newArrayList(getDao().findAll());
+    public List<D> findAll() {
+        return Lists.transform(
+                Lists.newArrayList(getDao().findAll()),
+                getToDtoConverter()::convert
+        );
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<T> findAllSorted(String sortBy, String sortOrder) {
+    public List<D> findAllSorted(String sortBy, String sortOrder) {
         final Sort sortInfo = constructSort(sortBy, sortOrder);
-        return Lists.newArrayList(getDao().findAll(sortInfo));
+        return Lists.transform(
+                Lists.newArrayList(getDao().findAll(sortInfo)),
+                getToDtoConverter()::convert
+        );
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<T> findAllPaginated(int page, int size) {
-        final Page<T> pages = getDao().findAll(new PageRequest(page, size));
-        final List<T> content = pages.getContent();
+    public List<D> findAllPaginated(int page, int size) {
+        final List<E> content = getDao().findAll(new PageRequest(page, size)).getContent();
         if (content == null) {
             return Lists.newArrayList();
         }
-        return content;
+        return Lists.transform(content, getToDtoConverter()::convert);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<T> findAllPaginatedAndSorted(int page, int size, String sortBy, String sortOrder) {
+    public List<D> findAllPaginatedAndSorted(int page, int size, String sortBy, String sortOrder) {
         final Sort sortInfo = constructSort(sortBy, sortOrder);
-        final List<T> content = getDao().findAll(new PageRequest(page, size, sortInfo)).getContent();
+        final List<E> content = getDao().findAll(new PageRequest(page, size, sortInfo)).getContent();
         if (content == null) {
             return Lists.newArrayList();
         }
-        return content;
+        return Lists.transform(content, getToDtoConverter()::convert);
     }
 
     @Override
-    public T create(T entity) {
-        final T persistedEntity = getDao().save(entity);
-        return persistedEntity;
+    public D create(D entity) {
+        final E persistedEntity = getDao().save(getToEntityConverter().convert(entity));
+        return getToDtoConverter().convert(persistedEntity);
     }
 
     @Override
-    public void update(T entity) {
-        getDao().save(entity);
+    public void update(D entity) {
+        getDao().save(getToEntityConverter().convert(entity));
     }
 
     @Override
     public void delete(Long id) {
-        final Optional<T> entity = getDao().findById(id);
+        final Optional<E> entity = getDao().findById(id);
         if(entity.isPresent()) {
             getDao().delete(entity.get());
         }
@@ -85,7 +99,7 @@ public abstract class AbstractService<T extends IdentifiableComponent> implement
         return getDao().count();
     }
 
-    protected abstract PagingAndSortingRepository<T, Long> getDao();
+    protected abstract PagingAndSortingRepository<E, Long> getDao();
 
     protected final Sort constructSort(final String sortBy, final String sortOrder) {
         Sort sortInfo = null;

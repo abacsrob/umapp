@@ -1,5 +1,5 @@
 package com.restcourse.umapp.common;
 
-public interface WithNameComponent<T extends NameableComponent> {
+public interface UmSearchableByName<T extends UmNameable> {
     T findByName(final String name);
 }

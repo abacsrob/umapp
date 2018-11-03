@@ -2,6 +2,7 @@ package com.restcourse.umapp.web.controller;
 
 import com.restcourse.umapp.entity.Role;
 import com.restcourse.umapp.service.RoleService;
+import com.restcourse.umapp.web.dto.RoleDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/roles")
-public class RoleController extends AbstractController<Role> {
+public class RoleController extends AbstractController<RoleDto> {
 
     private RoleService roleService;
 
@@ -19,18 +20,18 @@ public class RoleController extends AbstractController<Role> {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Role> findAll() {
+    public List<RoleDto> findAll() {
         return findAllInternal();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Role findOne(@PathVariable("id") final Long id) {
+    public RoleDto findOne(@PathVariable("id") final Long id) {
         return findOneInternal(id);
     }
 
     @RequestMapping(params = { "page", "size", "sortBy", "sortOrder" }, method = RequestMethod.GET)
     @ResponseBody
-    public List<Role> findAllPaginatedAndSorted(
+    public List<RoleDto> findAllPaginatedAndSorted(
             @RequestParam(value = "page") final int page, @RequestParam(value = "size") final int size,
             @RequestParam(value = "sortBy") final String sortBy, @RequestParam(value = "sortOrder") final String sortOrder) {
         return findPaginatedAndSortedInternal(page, size, sortBy, sortOrder);
@@ -38,25 +39,25 @@ public class RoleController extends AbstractController<Role> {
 
     @RequestMapping(params = { "page", "size" }, method = RequestMethod.GET)
     @ResponseBody
-    public List<Role> findAllPaginated(@RequestParam(value = "page") final int page, @RequestParam(value = "size") final int size) {
+    public List<RoleDto> findAllPaginated(@RequestParam(value = "page") final int page, @RequestParam(value = "size") final int size) {
         return findPaginatedInternal(page, size);
     }
 
     @RequestMapping(params = { "sortBy", "sortOrder" }, method = RequestMethod.GET)
     @ResponseBody
-    public List<Role> findAllSorted(@RequestParam(value = "sortBy") final String sortBy, @RequestParam(value = "sortOrder") final String sortOrder) {
+    public List<RoleDto> findAllSorted(@RequestParam(value = "sortBy") final String sortBy, @RequestParam(value = "sortOrder") final String sortOrder) {
         return findAllSortedInternal(sortBy, sortOrder);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody @Valid final Role resource) {
+    public void create(@RequestBody @Valid final RoleDto resource) {
         createInternal(resource);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable("id") final Long id, @RequestBody @Valid final Role resource) {
+    public void update(@PathVariable("id") final Long id, @RequestBody @Valid final RoleDto resource) {
         updateInternal(id, resource);
     }
 

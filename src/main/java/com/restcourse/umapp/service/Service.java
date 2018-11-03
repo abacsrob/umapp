@@ -1,10 +1,10 @@
 package com.restcourse.umapp.service;
 
-import com.restcourse.umapp.common.IdentifiableComponent;
+import com.restcourse.umapp.common.UmDto;
 
 import java.util.List;
 
-public interface Service<T extends IdentifiableComponent> {
+public interface Service<T extends UmDto> {
 
     T findOne(final Long id);
 

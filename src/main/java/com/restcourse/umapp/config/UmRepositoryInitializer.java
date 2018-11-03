@@ -9,6 +9,9 @@ import com.restcourse.umapp.entity.User;
 import com.restcourse.umapp.service.PrivilegeService;
 import com.restcourse.umapp.service.RoleService;
 import com.restcourse.umapp.service.UserService;
+import com.restcourse.umapp.web.dto.PrivilegeDto;
+import com.restcourse.umapp.web.dto.RoleDto;
+import com.restcourse.umapp.web.dto.UserDto;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -40,25 +43,25 @@ public class UmRepositoryInitializer implements ApplicationListener<ContextRefre
 
     private void createPrivileges() {
         Lists.newArrayList(
-                new Privilege(UmAppConstants.Privileges.CAN_USER_READ),
-                new Privilege(UmAppConstants.Privileges.CAN_USER_WRITE),
-                new Privilege(UmAppConstants.Privileges.CAN_ROLE_READ),
-                new Privilege(UmAppConstants.Privileges.CAN_ROLE_WRITE),
-                new Privilege(UmAppConstants.Privileges.CAN_PRIVILEGE_READ),
-                new Privilege(UmAppConstants.Privileges.CAN_PRIVILEGE_WRITE)
+                new PrivilegeDto(UmAppConstants.Privileges.CAN_USER_READ),
+                new PrivilegeDto(UmAppConstants.Privileges.CAN_USER_WRITE),
+                new PrivilegeDto(UmAppConstants.Privileges.CAN_ROLE_READ),
+                new PrivilegeDto(UmAppConstants.Privileges.CAN_ROLE_WRITE),
+                new PrivilegeDto(UmAppConstants.Privileges.CAN_PRIVILEGE_READ),
+                new PrivilegeDto(UmAppConstants.Privileges.CAN_PRIVILEGE_WRITE)
         ).forEach(privilege -> privilegeService.create(privilege));
     }
 
     private void createRoles() {
-        final Privilege privilegeCanUserRead = privilegeService.findByName(UmAppConstants.Privileges.CAN_USER_READ);
-        final Privilege privilegeCanUserWrite = privilegeService.findByName(UmAppConstants.Privileges.CAN_USER_WRITE);
-        final Privilege privilegeCanRoleRead = privilegeService.findByName(UmAppConstants.Privileges.CAN_ROLE_READ);
-        final Privilege privilegeCanRoleWrite = privilegeService.findByName(UmAppConstants.Privileges.CAN_ROLE_WRITE);
-        final Privilege privilegeCanPrivilegeRead = privilegeService.findByName(UmAppConstants.Privileges.CAN_PRIVILEGE_READ);
-        final Privilege privilegeCanPrivilegeWrite = privilegeService.findByName(UmAppConstants.Privileges.CAN_PRIVILEGE_WRITE);
+        final PrivilegeDto privilegeCanUserRead = privilegeService.findByName(UmAppConstants.Privileges.CAN_USER_READ);
+        final PrivilegeDto privilegeCanUserWrite = privilegeService.findByName(UmAppConstants.Privileges.CAN_USER_WRITE);
+        final PrivilegeDto privilegeCanRoleRead = privilegeService.findByName(UmAppConstants.Privileges.CAN_ROLE_READ);
+        final PrivilegeDto privilegeCanRoleWrite = privilegeService.findByName(UmAppConstants.Privileges.CAN_ROLE_WRITE);
+        final PrivilegeDto privilegeCanPrivilegeRead = privilegeService.findByName(UmAppConstants.Privileges.CAN_PRIVILEGE_READ);
+        final PrivilegeDto privilegeCanPrivilegeWrite = privilegeService.findByName(UmAppConstants.Privileges.CAN_PRIVILEGE_WRITE);
 
         Lists.newArrayList(
-                new Role(
+                new RoleDto(
                         UmAppConstants.Roles.ROLE_USER,
                         Sets.newHashSet(
                                 privilegeCanUserRead,
@@ -66,7 +69,7 @@ public class UmRepositoryInitializer implements ApplicationListener<ContextRefre
                                 privilegeCanPrivilegeRead
                         )
                 ),
-                new Role(
+                new RoleDto(
                         UmAppConstants.Roles.ROLE_ADMIN,
                         Sets.newHashSet(
                                 privilegeCanUserRead,
@@ -81,12 +84,12 @@ public class UmRepositoryInitializer implements ApplicationListener<ContextRefre
     }
 
     private void createUsers() {
-        final Role roleUser = roleService.findByName(UmAppConstants.Roles.ROLE_USER);
-        final Role roleAdmin = roleService.findByName(UmAppConstants.Roles.ROLE_ADMIN);
+        final RoleDto roleUser = roleService.findByName(UmAppConstants.Roles.ROLE_USER);
+        final RoleDto roleAdmin = roleService.findByName(UmAppConstants.Roles.ROLE_ADMIN);
 
         Lists.newArrayList(
-                new User(UmAppConstants.USER_USERNAME, UmAppConstants.USER_PASS, Sets.newHashSet(roleUser)),
-                new User(UmAppConstants.ADMIN_USERNAME, UmAppConstants.ADMIN_PASS, Sets.newHashSet(roleAdmin))
+                new UserDto(UmAppConstants.USER_USERNAME, UmAppConstants.USER_PASS, Sets.newHashSet(roleUser)),
+                new UserDto(UmAppConstants.ADMIN_USERNAME, UmAppConstants.ADMIN_PASS, Sets.newHashSet(roleAdmin))
         ).forEach(user -> userService.create(user));
     }
 }

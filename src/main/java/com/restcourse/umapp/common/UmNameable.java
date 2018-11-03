@@ -2,6 +2,6 @@ package com.restcourse.umapp.common;
 
 import java.io.Serializable;
 
-public interface NameableComponent extends Serializable {
+public interface UmNameable extends Serializable {
     String getName();
 }

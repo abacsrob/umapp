@@ -1,6 +1,7 @@
 package com.restcourse.umapp.web.controller;
 
-import com.restcourse.umapp.common.IdentifiableComponent;
+import com.restcourse.umapp.common.UmDto;
+import com.restcourse.umapp.common.UmIdentifiable;
 import com.restcourse.umapp.service.PagingAndSortingService;
 import com.restcourse.umapp.web.RestPreconditions;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-public abstract class AbstractController<T extends IdentifiableComponent> {
+public abstract class AbstractController<T extends UmDto> {
 
     protected abstract PagingAndSortingService<T> getService();
 

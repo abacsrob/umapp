@@ -1,10 +1,10 @@
 package com.restcourse.umapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.restcourse.umapp.common.IdentifiableComponent;
-import com.restcourse.umapp.common.NameableComponent;
+import com.restcourse.umapp.common.UmEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -13,7 +13,8 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Privilege implements IdentifiableComponent, NameableComponent {
+@NoArgsConstructor
+public class Privilege implements UmEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,8 +34,4 @@ public class Privilege implements IdentifiableComponent, NameableComponent {
     @ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    public Privilege(String name) {
-        this.name = name;
-        this.description = name;
-    }
 }

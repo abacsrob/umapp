@@ -1,9 +1,9 @@
 package com.restcourse.umapp.entity;
 
-import com.restcourse.umapp.common.IdentifiableComponent;
-import com.restcourse.umapp.common.NameableComponent;
+import com.restcourse.umapp.common.UmEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -11,7 +11,8 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Role implements IdentifiableComponent, NameableComponent {
+@NoArgsConstructor
+public class Role implements UmEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,8 +30,4 @@ public class Role implements IdentifiableComponent, NameableComponent {
             inverseJoinColumns = { @JoinColumn(name = "PRIV_ID", referencedColumnName = "PRIV_ID") })
     private Set<Privilege> privileges;
 
-    public Role(String name, Set<Privilege> privileges) {
-        this.name = name;
-        this.privileges = privileges;
-    }
 }
