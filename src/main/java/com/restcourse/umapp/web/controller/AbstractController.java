@@ -40,12 +40,6 @@ public abstract class AbstractController<T extends UmDto> {
         RestPreconditions.checkRequestValidity(
                 resource == null,
                 "Cannot create a " + resourceType + " resource because the resource is null!");
-        RestPreconditions.checkRequestValidity(
-                resource.getId() == null,
-                "Cannot create a " + resourceType + " resource with an id value of null!");
-        RestPreconditions.checkRequestValidity(
-                getService().findOne(resource.getId()) != null,
-                "The " + resourceType + " resource with id=" + resource.getId().toString() + " already exists on the server!");
         getService().create(resource);
     }
 
