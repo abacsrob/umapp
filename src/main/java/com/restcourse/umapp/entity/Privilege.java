@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data
@@ -21,7 +20,6 @@ public class Privilege implements UmEntity {
     @Column(name = "PRIV_ID")
     private Long id;
 
-    @NotNull
     @Column(unique = true, nullable = false)
     private String name;
 

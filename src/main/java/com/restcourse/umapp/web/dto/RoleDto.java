@@ -5,12 +5,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data
 public class RoleDto implements UmDto {
 
+    @NotNull
     private Long id;
+
+    @NotNull
     private String name;
 
     @EqualsAndHashCode.Exclude
