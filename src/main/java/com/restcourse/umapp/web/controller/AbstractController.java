@@ -52,11 +52,11 @@ public abstract class AbstractController<T extends UmDto> {
                 resource == null,
                 "The resource is null!");
         RestPreconditions.checkRequestValidity(
-                id != resource.getId(),
-                "The " + resourceType + " id and the request URI id don't match!");
-        RestPreconditions.checkRequestValidity(
                 getService().findOne(id) == null,
                 "The " + resourceType + " resource with id=" + id + " does not exist on the server!");
+        RestPreconditions.checkRequestValidity(
+                id != resource.getId(),
+                "The " + resourceType + " id and the request URI id don't match!");
         getService().update(resource);
     }
 
