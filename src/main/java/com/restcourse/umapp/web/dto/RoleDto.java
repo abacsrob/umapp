@@ -11,7 +11,6 @@ import java.util.Set;
 @Data
 public class RoleDto implements UmDto {
 
-    @NotNull
     private Long id;
 
     @NotNull

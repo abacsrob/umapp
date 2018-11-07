@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 @Data
 public class PrivilegeDto implements UmDto {
 
-    @NotNull
     private Long id;
 
     @NotNull

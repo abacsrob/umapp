@@ -14,7 +14,6 @@ import java.util.Set;
 @Data
 public class UserDto implements UmDto {
 
-    @NotNull
     private Long id;
 
     @NotNull

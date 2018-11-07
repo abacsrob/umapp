@@ -1,7 +1,7 @@
 package com.restcourse.umapp.web.controller;
 
 import com.restcourse.umapp.common.UmDto;
-import com.restcourse.umapp.common.UmIdentifiable;
+import com.restcourse.umapp.common.UmSearchableByName;
 import com.restcourse.umapp.service.PagingAndSortingService;
 import com.restcourse.umapp.web.RestPreconditions;
 import org.springframework.http.HttpStatus;
@@ -40,6 +40,9 @@ public abstract class AbstractController<T extends UmDto> {
         RestPreconditions.checkRequestValidity(
                 resource == null,
                 "Cannot create a " + resourceType + " resource because the resource is null!");
+        RestPreconditions.checkRequestValidity(
+                ((UmSearchableByName)getService()).findByName(resource.getName()) != null,
+                "Cannot create a " + resourceType + " resource because a nameable resource with the given name already exists in the database!");
         getService().create(resource);
     }
 
