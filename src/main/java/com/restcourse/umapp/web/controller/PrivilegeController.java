@@ -1,6 +1,5 @@
 package com.restcourse.umapp.web.controller;
 
-import com.restcourse.umapp.entity.Privilege;
 import com.restcourse.umapp.service.PrivilegeService;
 import com.restcourse.umapp.web.dto.PrivilegeDto;
 import org.springframework.http.HttpStatus;

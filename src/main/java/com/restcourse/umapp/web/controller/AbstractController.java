@@ -1,8 +1,7 @@
 package com.restcourse.umapp.web.controller;
 
 import com.restcourse.umapp.common.UmDto;
-import com.restcourse.umapp.common.UmSearchableByName;
-import com.restcourse.umapp.service.PagingAndSortingService;
+import com.restcourse.umapp.common.UmService;
 import com.restcourse.umapp.web.RestPreconditions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public abstract class AbstractController<T extends UmDto> {
 
-    protected abstract PagingAndSortingService<T> getService();
+    protected abstract UmService<T> getService();
 
     protected T findOneInternal(Long id) {
         return getService().findOne(id);
@@ -41,7 +40,7 @@ public abstract class AbstractController<T extends UmDto> {
                 resource == null,
                 "Cannot create a " + resourceType + " resource because the resource is null!");
         RestPreconditions.checkRequestValidity(
-                ((UmSearchableByName)getService()).findByName(resource.getName()) != null,
+                getService().findByName(resource.getName()) != null,
                 "Cannot create a " + resourceType + " resource because a nameable resource with the given name already exists in the database!");
         getService().create(resource);
     }
@@ -57,6 +56,10 @@ public abstract class AbstractController<T extends UmDto> {
         RestPreconditions.checkRequestValidity(
                 id != resource.getId(),
                 "The " + resourceType + " id and the request URI id don't match!");
+        RestPreconditions.checkRequestValidity(
+                getService().findByNameAndId(resource.getName(), resource.getId()) == null &&
+                getService().findByName(resource.getName()) != null,
+                "Cannot update a " + resourceType + " resource because a nameable resource with the given name already exists in the database!");
         getService().update(resource);
     }
 

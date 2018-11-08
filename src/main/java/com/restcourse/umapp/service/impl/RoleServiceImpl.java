@@ -1,5 +1,6 @@
 package com.restcourse.umapp.service.impl;
 
+import com.restcourse.umapp.common.UmService;
 import com.restcourse.umapp.repository.RoleRepository;
 import com.restcourse.umapp.entity.Role;
 import com.restcourse.umapp.service.AbstractService;
@@ -7,11 +8,10 @@ import com.restcourse.umapp.service.RoleService;
 import com.restcourse.umapp.web.converter.RoleToDtoConverter;
 import com.restcourse.umapp.web.converter.RoleToEntityConverter;
 import com.restcourse.umapp.web.dto.RoleDto;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoleServiceImpl extends AbstractService<Role, RoleDto> implements RoleService {
+public class RoleServiceImpl extends AbstractService<Role, RoleDto> implements UmService<RoleDto>, RoleService {
 
     private RoleRepository roleRepository;
     private RoleToDtoConverter roleToDtoConverter;
@@ -36,6 +36,11 @@ public class RoleServiceImpl extends AbstractService<Role, RoleDto> implements R
     @Override
     public RoleDto findByName(final String name) {
         return getToDtoConverter().convert(getDao().findByName(name));
+    }
+
+    @Override
+    public RoleDto findByNameAndId(String name, Long id) {
+        return getToDtoConverter().convert(getDao().findByNameAndId(name, id));
     }
 
     @Override

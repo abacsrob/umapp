@@ -1,6 +1,5 @@
 package com.restcourse.umapp.web.controller;
 
-import com.restcourse.umapp.entity.Role;
 import com.restcourse.umapp.service.RoleService;
 import com.restcourse.umapp.web.dto.RoleDto;
 import org.springframework.http.HttpStatus;

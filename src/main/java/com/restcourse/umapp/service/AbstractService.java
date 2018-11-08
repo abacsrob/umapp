@@ -3,12 +3,10 @@ package com.restcourse.umapp.service;
 import com.google.common.collect.Lists;
 import com.restcourse.umapp.common.UmDto;
 import com.restcourse.umapp.common.UmEntity;
-import com.restcourse.umapp.common.UmIdentifiable;
+import com.restcourse.umapp.common.UmRepository;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -99,7 +97,7 @@ public abstract class AbstractService<E extends UmEntity, D extends UmDto> imple
         return getDao().count();
     }
 
-    protected abstract PagingAndSortingRepository<E, Long> getDao();
+    protected abstract UmRepository<E> getDao();
 
     protected final Sort constructSort(final String sortBy, final String sortOrder) {
         Sort sortInfo = null;

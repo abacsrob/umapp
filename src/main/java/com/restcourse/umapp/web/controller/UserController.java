@@ -1,7 +1,5 @@
 package com.restcourse.umapp.web.controller;
 
-import com.restcourse.umapp.entity.Role;
-import com.restcourse.umapp.entity.User;
 import com.restcourse.umapp.service.UserService;
 import com.restcourse.umapp.web.dto.UserDto;
 import org.springframework.http.HttpStatus;

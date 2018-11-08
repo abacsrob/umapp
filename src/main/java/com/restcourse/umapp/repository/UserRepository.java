@@ -1,9 +1,7 @@
 package com.restcourse.umapp.repository;
 
-import com.restcourse.umapp.common.UmSearchableByName;
+import com.restcourse.umapp.common.UmRepository;
 import com.restcourse.umapp.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>, UmSearchableByName<User> {
+public interface UserRepository extends UmRepository<User> {
 }
