@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/privileges")
+@RequestMapping(value = "/api/privileges", produces = {"application/json", "application/xml"})
 public class PrivilegeController extends AbstractController<PrivilegeDto> {
 
     private PrivilegeService privilegeService;
