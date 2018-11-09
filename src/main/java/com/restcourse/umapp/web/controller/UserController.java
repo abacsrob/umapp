@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping(value = "/api/users", produces = {"application/json", "application/xml"})
 public class UserController extends AbstractController<UserDto> {
 
     private UserService userService;

@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/roles")
+@RequestMapping(value = "/api/roles", produces = {"application/json", "application/xml"})
 public class RoleController extends AbstractController<RoleDto> {
 
     private RoleService roleService;
