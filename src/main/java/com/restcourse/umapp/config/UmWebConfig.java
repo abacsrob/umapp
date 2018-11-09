@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -21,12 +23,18 @@ public class UmWebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        Optional<HttpMessageConverter<?>> converterOptional = converters.stream().filter(converter -> converter instanceof AbstractJackson2HttpMessageConverter).findFirst();
-        if (converterOptional.isPresent()) {
-            final AbstractJackson2HttpMessageConverter converter = (AbstractJackson2HttpMessageConverter) converterOptional.get();
-            converter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-            converter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        }
+        Optional<HttpMessageConverter<?>> jsonConverterOptional = converters.stream().filter(converter -> converter instanceof MappingJackson2HttpMessageConverter).findFirst();
+        jsonConverterOptional.ifPresent(converter -> {
+            final AbstractJackson2HttpMessageConverter jsonConverter = (AbstractJackson2HttpMessageConverter) converter;
+            jsonConverter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+            jsonConverter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        });
+        Optional<HttpMessageConverter<?>> xmlConverterOptional = converters.stream().filter(converter -> converter instanceof MappingJackson2XmlHttpMessageConverter).findFirst();
+        xmlConverterOptional.ifPresent(converter -> {
+            final AbstractJackson2HttpMessageConverter xmlConverter = (AbstractJackson2HttpMessageConverter) converter;
+            xmlConverter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+            xmlConverter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        });
     }
 
 //    @Bean
