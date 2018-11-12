@@ -24,19 +24,16 @@ public class UmWebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         Optional<HttpMessageConverter<?>> jsonConverterOptional = converters.stream().filter(converter -> converter instanceof MappingJackson2HttpMessageConverter).findFirst();
-        jsonConverterOptional.ifPresent(converter -> {
-            final AbstractJackson2HttpMessageConverter jsonConverter = (AbstractJackson2HttpMessageConverter) converter;
-            jsonConverter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-            jsonConverter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        });
+        jsonConverterOptional.ifPresent(converter -> setUpMessageConverter(converter));
         Optional<HttpMessageConverter<?>> xmlConverterOptional = converters.stream().filter(converter -> converter instanceof MappingJackson2XmlHttpMessageConverter).findFirst();
-        xmlConverterOptional.ifPresent(converter -> {
-            final AbstractJackson2HttpMessageConverter xmlConverter = (AbstractJackson2HttpMessageConverter) converter;
-            xmlConverter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-            xmlConverter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        });
+        xmlConverterOptional.ifPresent(converter -> setUpMessageConverter(converter));
     }
 
+    private void setUpMessageConverter(HttpMessageConverter<?> aConverter) {
+        final AbstractJackson2HttpMessageConverter converter = (AbstractJackson2HttpMessageConverter) aConverter;
+        converter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        converter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
 //    @Bean
     public javax.validation.Validator localValidatorFactoryBean() {
         return new LocalValidatorFactoryBean();
